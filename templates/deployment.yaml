@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "krateo-test-nginx-helm-template.fullname" . }}
+  labels:
+    app: {{ include "krateo-test-nginx-helm-template.name" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "krateo-test-nginx-helm-template.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "krateo-test-nginx-helm-template.name" . }}
+    spec:
+      containers:
+        - name: nginx
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: index-html
+              mountPath: /usr/share/nginx/html/index.html
+              subPath: index.html
+      volumes:
+        - name: index-html
+          configMap:
+            name: {{ include "krateo-test-nginx-helm-template.fullname" . }}-index

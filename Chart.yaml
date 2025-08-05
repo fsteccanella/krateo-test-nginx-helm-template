@@ -1,0 +1,4 @@
+apiVersion: v2
+name: krateo-test-nginx-helm-template
+version: 0.1.0
+description: A simple Helm chart to deploy NGINX
